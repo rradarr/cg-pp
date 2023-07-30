@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32901.215
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testbed2D", "Testbed2D\Testbed2D.csproj", "{E12CDE9B-1DD2-4660-921D-CACBB63445D4}"
 	ProjectSection(ProjectDependencies) = postProject
 		{641C220B-DCC7-46C7-A2EA-1D0DD38F021A} = {641C220B-DCC7-46C7-A2EA-1D0DD38F021A}
@@ -56,6 +58,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageFill", "ImageFill\ImageFill.csproj", "{BA05FD82-22A1-4A4F-9642-6EEBEF2A7CFB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LA Test App", "LA Test App\LA Test App.csproj", "{D34A974B-7683-4797-B257-03E9AC665D87}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Circle3", "Circle3\Circle3.csproj", "{FDF09D66-B613-412D-AB51-554E9D8DEE84}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Durer_exercises", "Durer_exercises\Durer_exercises.csproj", "{EE01354F-A3FC-405F-9B87-412F2E5D58A8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -224,8 +230,35 @@ Global
 		{D34A974B-7683-4797-B257-03E9AC665D87}.Release|Mixed Platforms.Build.0 = Release|x86
 		{D34A974B-7683-4797-B257-03E9AC665D87}.Release|x86.ActiveCfg = Release|x86
 		{D34A974B-7683-4797-B257-03E9AC665D87}.Release|x86.Build.0 = Release|x86
+		{FDF09D66-B613-412D-AB51-554E9D8DEE84}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{FDF09D66-B613-412D-AB51-554E9D8DEE84}.Debug|Any CPU.Build.0 = Debug|x86
+		{FDF09D66-B613-412D-AB51-554E9D8DEE84}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{FDF09D66-B613-412D-AB51-554E9D8DEE84}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{FDF09D66-B613-412D-AB51-554E9D8DEE84}.Debug|x86.ActiveCfg = Debug|x86
+		{FDF09D66-B613-412D-AB51-554E9D8DEE84}.Debug|x86.Build.0 = Debug|x86
+		{FDF09D66-B613-412D-AB51-554E9D8DEE84}.Release|Any CPU.ActiveCfg = Release|x86
+		{FDF09D66-B613-412D-AB51-554E9D8DEE84}.Release|Any CPU.Build.0 = Release|x86
+		{FDF09D66-B613-412D-AB51-554E9D8DEE84}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{FDF09D66-B613-412D-AB51-554E9D8DEE84}.Release|Mixed Platforms.Build.0 = Release|x86
+		{FDF09D66-B613-412D-AB51-554E9D8DEE84}.Release|x86.ActiveCfg = Release|x86
+		{FDF09D66-B613-412D-AB51-554E9D8DEE84}.Release|x86.Build.0 = Release|x86
+		{EE01354F-A3FC-405F-9B87-412F2E5D58A8}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{EE01354F-A3FC-405F-9B87-412F2E5D58A8}.Debug|Any CPU.Build.0 = Debug|x86
+		{EE01354F-A3FC-405F-9B87-412F2E5D58A8}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{EE01354F-A3FC-405F-9B87-412F2E5D58A8}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{EE01354F-A3FC-405F-9B87-412F2E5D58A8}.Debug|x86.ActiveCfg = Debug|x86
+		{EE01354F-A3FC-405F-9B87-412F2E5D58A8}.Debug|x86.Build.0 = Debug|x86
+		{EE01354F-A3FC-405F-9B87-412F2E5D58A8}.Release|Any CPU.ActiveCfg = Release|x86
+		{EE01354F-A3FC-405F-9B87-412F2E5D58A8}.Release|Any CPU.Build.0 = Release|x86
+		{EE01354F-A3FC-405F-9B87-412F2E5D58A8}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{EE01354F-A3FC-405F-9B87-412F2E5D58A8}.Release|Mixed Platforms.Build.0 = Release|x86
+		{EE01354F-A3FC-405F-9B87-412F2E5D58A8}.Release|x86.ActiveCfg = Release|x86
+		{EE01354F-A3FC-405F-9B87-412F2E5D58A8}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6CC39A14-00EC-4BDE-B435-708BB3B928E7}
 	EndGlobalSection
 EndGlobal

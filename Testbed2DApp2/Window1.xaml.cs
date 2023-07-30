@@ -48,6 +48,7 @@ namespace GraphicsBook
             myTriangle = new Polygon();
             myTriangle.Points.Add(new Point(0, 10));
             myTriangle.Points.Add(new Point(10, 0));
+            myTriangle.Points.Add(new Point(0, -10));
             myTriangle.Points.Add(new Point(-10, 0));
             myTriangle.Stroke = Brushes.Black;
             myTriangle.StrokeThickness = 1; // 1 mm thick line
@@ -173,7 +174,7 @@ namespace GraphicsBook
 
         void slider1change(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            Debug.Print("Slider changed, ready = " + ready + ", and val = " + e.NewValue + ".\n");
+            Debug.Print("Slider1 changed, ready = " + ready + ", and val = " + e.NewValue + ".\n");
             e.Handled = true;
             if (ready)
             {
@@ -182,6 +183,11 @@ namespace GraphicsBook
                 Point u = p[0];
                 u.X = e.NewValue;
                 p[0] = u;
+
+                u = p[2];
+                u.X = e.NewValue;
+                p[2] = u;
+
                 myTriangle.Points = p;
             }
         }

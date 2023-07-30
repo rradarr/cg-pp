@@ -17,11 +17,9 @@ namespace GraphicsBook
     {
         GraphPaper gp = null;
 
-        Polygon myTriangle = null;
-        GImage myImage1 = null;
-        GImage myImage2 = null;
-        Mesh myMesh = null;
-        Quiver myQuiver = null;
+        Dot[] myDots = null;
+        Circle myCircle = null;
+        Random autoRand = new Random();
 
         // Are we ready for interactions like slider-changes to alter the 
         // parts of our display (like polygons or images or arrows)? Probably not until those things 
@@ -43,83 +41,65 @@ namespace GraphicsBook
             MouseLeftButtonUp += MyMouseButtonUp;
             MouseMove += MyMouseMove;
 
-            #region Triangles, segments, dots
-            // A triangle, whose top point can be moved using the slider. 
-            myTriangle = new Polygon();
-            myTriangle.Points.Add(new Point(0, 10));
-            myTriangle.Points.Add(new Point(10, 0));
-            myTriangle.Points.Add(new Point(0, -10));
-            myTriangle.Points.Add(new Point(-10, 0));
-            myTriangle.Stroke = Brushes.Black;
-            myTriangle.StrokeThickness = 1; // 1 mm thick line
-            myTriangle.Fill = Brushes.LightSeaGreen;
-            gp.Children.Add(myTriangle);
+            myDots = new Dot[3];
+            myDots[0] = new Dot(new Point(-40, 60));
+            myDots[1] = new Dot(new Point(40, 60));
+            myDots[2] = new Dot(new Point(40, -60));
 
-            // A draggable Dot, which is the basepoint of an arrow.
-            Dot dd = new Dot(new Point(-40, 60));
-            dd.MakeDraggable(gp);
-            gp.Children.Add(dd);
-
-            Arrow ee = new Arrow(dd, new Point(10, 10), Arrow.endtype.END);
-            gp.Children.Add(ee);
-
-            // a dot and a segment that's attached to it; the dot is animated
-            Dot p1 = new Dot(new Point(20, 20));
-            gp.Children.Add(p1);
-            Point p2 = new Point(50, 50);
-            Segment mySegment = new Segment(p1, p2);
-            gp.Children.Add(mySegment);
-
-            PointAnimation animaPoint1 = new PointAnimation(
-                new Point(-20, -20),
-                new Point(-40, 20),
-                new Duration(new TimeSpan(0, 0, 5)));
-            animaPoint1.AutoReverse = true;
-            animaPoint1.RepeatBehavior = RepeatBehavior.Forever;
-            p1.BeginAnimation(Dot.PositionProperty, animaPoint1);
-            #endregion
-            #region Images
-
-            // And a photo from a file, then another that's 
-            // created on-the-fly instead of read from a file. 
-
-            myImage1 = new GImage("./foo.jpg");
-            myImage1.Width = GraphPaper.wpf(200);
-            myImage1.Position = new Point(10, 40);
-            Point pq = new Point(10, 40);
-            
-            gp.Children.Add(myImage1);
-
-            // Now add a second image, based on first building an array of color values
-            // Create source array
-            byte[, ,] stripes = createStripeImageArray();
-
-            myImage2 = new GImage(stripes);
-            
-            // Establish the width and height for this image on the GraphPaper
-            myImage2.Width = GraphPaper.wpf(128);
-            myImage2.Height = GraphPaper.wpf(128);
-
-            myImage2.Position = new Point(-40, 20);
-            gp.Children.Add(myImage2);
-            #endregion
-            #region Mesh, Quiver, and Text labels
-
-            myMesh = this.createSampleMesh();
-            gp.Children.Add(myMesh);
-
-            Text myText = new Text("THIS IS TEXT");
-            myText.Position = new Point(20, 50);
-            gp.Children.Add(myText);
-
-            myQuiver = makeQuiver();
-            foreach (Shape q in myQuiver)
-            {
-                gp.Children.Add(q);
+            for(int i = 0; i < 3; i++) {
+                myDots[i].MakeDraggable(gp);
+                gp.Children.Add(myDots[i]);
             }
 
-            #endregion
+            myCircle = new Circle(new Point(0,0), 0.0);
+            updateCircle(myDots[0].Position, myDots[1].Position, myDots[2].Position);
+            gp.Children.Add(myCircle);
+
             ready = true; // Now we're ready to have sliders and buttons influence the display.
+        }
+
+        protected void updateCircle(Point P, Point Q, Point R) {
+            if ((P.X == Q.X) & (P.Y == Q.Y)) {
+                P.X += .001 * (2 * autoRand.NextDouble() - 1);
+                P.Y += .001 * (2 * autoRand.NextDouble() - 1);
+            }
+            if ((Q.X == R.X) & (Q.Y == R.Y)) {
+                R.X += .001 * (2 * autoRand.NextDouble() - 1);
+                R.Y += .001 * (2 * autoRand.NextDouble() - 1);
+            }
+
+            Point A = P + (Q - P) / 2.0;
+            Point B = Q + (R - Q) / 2.0;
+
+            Vector v = Q - P;
+            double tmp = v.X;
+            v.X = v.Y;
+            v.Y = -tmp;     // clockwise vector rotation by 90 deg
+            v.Normalize();
+            
+            Vector w = R - Q;
+            w.Normalize();
+            tmp = w.X;
+            w.X = w.Y;
+            w.Y = -tmp;
+
+            double a = v.X; double b = w.X; double c = v.Y; double d = w.Y;
+            double det = a * d - b * c;
+            // If the det is too small (or zero), we can fix it by moving the xcoordinates of v and w by 1/1000,
+            // which is too small to have any visual impact.
+            if (Math.Abs(det) < 1e-9) {
+                a += .001;
+                c += .001;
+            }
+            Vector target = (P - R) / 2.0;
+            double t = (d * target.X - b * target.Y);
+            double s = (-c * target.X + a * target.Y);
+            t /= det;
+
+            Point C = A + t * v;
+            double r = (P - C).Length;
+            myCircle.Position = C;
+            myCircle.Radius = r;
         }
 
         #region Interaction handling -- sliders and buttons
@@ -154,54 +134,18 @@ namespace GraphicsBook
             e.Handled = true;
         }
 
-        /* Event handler for a click on button one */
-        public void b1Click(object sender, RoutedEventArgs e)
-        {
-            Debug.Print("Button one clicked!\n");
+        public void DrawCircleClick(object sender, RoutedEventArgs e) {
+            Debug.Print("RedrawCircle clicked!\n");
             e.Handled = true; // don't propagate the click any further
+            updateCircle(myDots[0].Position, myDots[1].Position, myDots[2].Position);
         }
-
-
-        void slider1change(object sender, RoutedPropertyChangedEventArgs<double> e) {
-            Debug.Print("Slider1 changed, ready = " + ready + ", and val = " + e.NewValue + ".\n");
-            e.Handled = true;
-            if (ready) {
-                PointCollection p = myTriangle.Points.Clone();
-                Debug.Print(myTriangle.Points.ToString());
-                Point u = p[0];
-                u.X = e.NewValue;
-                p[0] = u;
-
-                u = p[2];
-                u.X = e.NewValue;
-                p[2] = u;
-
-                myTriangle.Points = p;
-            }
-        }
-
-        void slider2change(object sender, RoutedPropertyChangedEventArgs<double> e) {
-            Debug.Print("Slider2 changed, ready = " + ready + ", and val = " + e.NewValue + ".\n");
-            e.Handled = true;
-            if (ready) {
-                PointCollection p = myTriangle.Points.Clone();
-                Debug.Print(myTriangle.Points.ToString());
-                Point u = p[1];
-                u.Y = e.NewValue;
-                p[1] = u;
-
-                u = p[3];
-                u.Y = e.NewValue;
-                p[3] = u;
-
-                myTriangle.Points = p;
-            }
-        }
-
-        public void b2Click(object sender, RoutedEventArgs e)
-        {
-            Debug.Print("Button two clicked!\n");
+        public void ResetClick(object sender, RoutedEventArgs e) {
+            Debug.Print("Reset button clicked!\n");
             e.Handled = true; // don't propagate the click any further
+            myDots[0].Position = new Point(-40, 60);
+            myDots[1].Position = new Point(40, 60);
+            myDots[2].Position = new Point(40, -60);
+            updateCircle(myDots[0].Position, myDots[1].Position, myDots[2].Position);
         }
         #endregion
 
